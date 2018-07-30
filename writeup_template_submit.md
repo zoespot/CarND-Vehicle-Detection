@@ -14,12 +14,12 @@ The goals / steps of this project are the following:
 
 #### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  
 
-Writeup for project is [writeup-project](https://github.com/zoespot/CarND-Advanced-Lane-Lines/blob/master/writeup_template_submit.md).
+Writeup for project is [writeup-project](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/writeup_template_submit.md).
 
 Output video for project is
-![output-project-video](https://github.com/zoespot/CarND-Advanced-Lane-Lines/blob/master/output_videos/output_project_video_smooth.mp4)
+![output-project-video](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/output_videos/output_project_video_smooth.mp4)
 
-Code for project is [code-project](https://github.com/zoespot/CarND-Advanced-Lane-Lines/blob/master/vehicle_detect_smooth.ipynb).
+Code for project is [code-project](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/vehicle_detect_smooth.ipynb).
 
 ### Histogram of Oriented Gradients (HOG)
 
@@ -29,13 +29,13 @@ The code for this step is contained in the `get_hog_features` function (in the 3
 
 I started by reading in all the `vehicle` and `non-vehicle` images.  Here is an example of one of each of the `vehicle` and `non-vehicle` classes with their respective HOG image:
 
-![alt text](https://github.com/zoespot/CarND-Advanced-Lane-Lines/blob/master/output_images/car_notcar_hog.png)
+![alt text](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/output_images/car_notcar_hog.png)
 
 I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
 
 Above plot is with `RGB` color space with `hist_bins =16`, `spatial_size =(16,16)`, and HOG parameters of `orientations=8`, `hog_channel =0 `, `pixels_per_cell=(8, 8)`, `cells_per_block=(2, 2)`, `cell_per_block =2`. Below is an example using the `YCrCb` color space and HOG parameters of `orientations=9` (other parameters are the same):
 
-![alt text](https://github.com/zoespot/CarND-Advanced-Lane-Lines/blob/master/output_images/car_notcar_hog_YCrCb.png)
+![alt text](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/output_images/car_notcar_hog_YCrCb.png)
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
@@ -70,9 +70,9 @@ Test Accuracy of SVC =  0.997
 
 I decided to first limit the area of interest to the bottom half of the image, as the top half usually contain air, trees, hills, but no cars. Then I experiments different scale and overlap settings for several different images.
 
-![alt text](https://github.com/zoespot/CarND-Advanced-Lane-Lines/blob/master/output_images/window_scale_false_negative.png)
+![alt text](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/output_images/window_scale_false_negative.png)
 
-![alt text](https://github.com/zoespot/CarND-Advanced-Lane-Lines/blob/master/output_images/window_scale2.png)
+![alt text](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/output_images/window_scale2.png)
 
 
 So finally I choose to combine 3 different scales in my code to generate heat map. The smaller scale searches are limited to the upper area vertically to detect far-end cars, and larger scale search in the lower area for near-end cars. I use `threshold=1` for heatmap combination. It slowed down the search by three times (0.5s per image to 1.5s per image). However it's required to cover all the cases while excluding false positive detections.
@@ -100,22 +100,22 @@ for iii in range(len(scales)):
 heatmap_combined= apply_threshold(heatmap_combined, threshold=1)
 draw_img = draw_labeled_bboxes(np.copy(img), heatmap_combined)
 ```
-![alt text](https://github.com/zoespot/CarND-Advanced-Lane-Lines/blob/master/output_images/window_scales_sweep_test5.png)
+![alt text](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/output_images/window_scales_sweep_test5.png)
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
 Ultimately I searched on three scales using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here are some example images:
 
-![alt text](https://github.com/zoespot/CarND-Advanced-Lane-Lines/blob/master/output_images/window_scale_result.png)
+![alt text](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/output_images/window_scale_result.png)
 
 ---
 
 ### Video Implementation
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
-Here's a [link to my video result](https://github.com/zoespot/CarND-Advanced-Lane-Lines/blob/master/output_videos/output_project_video_smooth.mp4)
+Here's a [link to my video result](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/output_videos/output_project_video_smooth.mp4)
 
-An earlier implementation without smoothing is at here [link to my video result without smoothing](https://github.com/zoespot/CarND-Advanced-Lane-Lines/blob/master/output_videos/output_project_video_smooth.mp4). It more unstable, but individual detection is more accurate in some frames.
+An earlier implementation without smoothing is at here [link to my video result without smoothing](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/output_videos/output_project_video_smooth.mp4). It more unstable, but individual detection is more accurate in some frames.
 
 Both of them detects cars well without much false detections.
 
@@ -125,11 +125,11 @@ I recorded the positions of positive detections in each frame of the video with 
 
 ### Here are six frames and their corresponding heatmaps:
 
-![alt text](https://github.com/zoespot/CarND-Advanced-Lane-Lines/blob/master/output_images/pipeline_test6.png)
+![alt text](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/output_images/pipeline_test6.png)
 
 ### Here the resulting bounding boxes are drawn onto sequential frames in a series:
-![alt text](https://github.com/zoespot/CarND-Advanced-Lane-Lines/blob/master/output_images/window_scale_series.png.png)
-![alt text](https://github.com/zoespot/CarND-Advanced-Lane-Lines/blob/master/output_images/window_scale_series3.png)
+![alt text](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/output_images/window_scale_series.png.png)
+![alt text](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/output_images/window_scale_series3.png)
 
 ---
 
