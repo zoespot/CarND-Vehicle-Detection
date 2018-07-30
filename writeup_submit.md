@@ -14,12 +14,11 @@ The goals / steps of this project are the following:
 
 #### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  
 
-Writeup for project is [writeup-project](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/writeup_template_submit.md).
+Writeup for project is [writeup_submit.md](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/writeup_submit.md).
 
-Output video for project is
-![output-project-video](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/output_videos/output_project_video_smooth.mp4)
+Output video for project is [output_project_video_smooth](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/output_videos/output_project_video_smooth.mp4)
 
-Code for project is [code-project](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/vehicle_detect_smooth.ipynb).
+Code for project is [vehicle_detect_smooth.ipynb](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/vehicle_detect_smooth.ipynb).
 
 ### Histogram of Oriented Gradients (HOG)
 
@@ -72,9 +71,6 @@ I decided to first limit the area of interest to the bottom half of the image, a
 
 ![alt text](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/output_images/window_scale_false_negative.png)
 
-![alt text](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/output_images/window_scale2.png)
-
-
 So finally I choose to combine 3 different scales in my code to generate heat map. The smaller scale searches are limited to the upper area vertically to detect far-end cars, and larger scale search in the lower area for near-end cars. I use `threshold=1` for heatmap combination. It slowed down the search by three times (0.5s per image to 1.5s per image). However it's required to cover all the cases while excluding false positive detections.
 
 To further improve detection of false positive, **ROI is further reduced to trapezoidal road lanes area both horizontally and vertically.** As we don't need to detect cars in the reverse direction with fence in between.
@@ -123,12 +119,12 @@ Both of them detects cars well without much false detections.
 
 I recorded the positions of positive detections in each frame of the video with Vehicle() class.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
 
-### Here are six frames and their corresponding heatmaps:
+### Here are six frames of the test images:
 
 ![alt text](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/output_images/pipeline_test6.png)
 
 ### Here the resulting bounding boxes are drawn onto sequential frames in a series:
-![alt text](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/output_images/window_scale_series.png.png)
+
 ![alt text](https://github.com/zoespot/CarND-Vehicle-Detection/blob/master/output_images/window_scale_series3.png)
 
 ---
@@ -145,6 +141,6 @@ The problems I encountered in the project and their solutions:
 Limitations:
 * **SLOW** The current algorithm needs around 2.1-2.4 seconds to process one frame. It's much slower than the real-time expectation. It's due to the excessive number of scales used in order to cover small and large cars and excluding false positives. Even though I have already used HOG preprocessing over the whole image and sub-sampling, it still quite time consuming, since for each scale, HOG features are re-computed. It may help to reduce the number of frames per seconds sampling for real-time requirement.
 
-* **Generalization** Though my output video performed well on the existing project, there are many manual parameters tunings as ROI, heatmap and frame successive detection threshold, sliding windows scales etc. They may need to be retuned for different road conditions.
+* **Generalization** Though my output video performed well on the existing project, there are many manual parameters tunings as ROI, heatmap and frame successive detection threshold, sliding windows scales and overlapping ratio etc. They may need to be retuned for different road conditions.
 
 Vehicle detection with convolutional neural network, e.g. YOLO algorithm may perform better and easy to generalize to different road conditions.
