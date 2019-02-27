@@ -1,6 +1,8 @@
 # Udacity Self Driving Car Nano degree Term 1
 
 ## **Vehicle Detection Project**
+[![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
+
 ---
 The goals / steps of this project are the following:
 
